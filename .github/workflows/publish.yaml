@@ -1,7 +1,7 @@
 name: Build & Push Docker Image
 
 on:
-  pull_request:
+  push:
     branches: [main]
 
 jobs:
@@ -22,4 +22,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: nubodev/bql-integration-mailersend:0.0.1-internal
+          tags: businessql/integration-mailersend:0.0.1
