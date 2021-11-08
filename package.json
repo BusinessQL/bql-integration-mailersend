@@ -1,6 +1,6 @@
 {
   "name": "bql-integration-mailersend",
-  "version": "0.0.4-test",
+  "version": "0.0.5-test",
   "description": "",
   "main": "dist/app.js",
   "scripts": {
