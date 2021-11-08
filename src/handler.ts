@@ -27,10 +27,7 @@ export const handler = async (event: HandlerEvent, context: HandlerContext) => {
     context,
   };
 
-  return context
-    .status(200)
-    .headers({ 'content-type': 'application/json' })
-    .succeed(result);
+  return context.status(200).succeed(result);
 };
 
 export default handler;

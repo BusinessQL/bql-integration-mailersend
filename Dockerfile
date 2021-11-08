@@ -21,30 +21,32 @@ RUN mkdir -p /home/app/function
 
 # Wrapper/boot-strapper
 WORKDIR /home/app
-COPY package.json ./
+# COPY package.json ./
+COPY . ./
 
 # This ordering means the npm installation is cached for the outer function handler.
-RUN npm i
+RUN npm install
+RUN npm run build
 
 # Copy outer function handler
-COPY index.js ./
+# COPY index.js ./
 
 # COPY function node packages and install, adding this as a separate
 # entry allows caching of npm install
 
-WORKDIR /home/app/function
-COPY function/*.json ./
+# WORKDIR /home/app/function
+# COPY function/*.json ./
 
-RUN npm i
+# RUN npm i
 
 # COPY function files and folders
-COPY function/ ./
+# COPY function/ ./
 
 # Run any tests that may be available
-RUN npm test
+# RUN npm test
 
 # Set correct permissions to use non root user
-WORKDIR /home/app/
+# WORKDIR /home/app/
 
 ENV cgi_headers="true"
 ENV fprocess="node index.js"
