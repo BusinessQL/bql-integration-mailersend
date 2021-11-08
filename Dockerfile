@@ -34,7 +34,8 @@ RUN chmod 777 /tmp
 WORKDIR /home/app
 # COPY package.json ./
 
-COPY --from=BUILD /app/dist ./dist
+COPY --from=BUILD /app/index.js ./index.js
+COPY --from=BUILD /app/function ./function
 COPY --from=BUILD /app/node_modules ./node_modules
 COPY --from=BUILD /app/package.json ./package.json
 
