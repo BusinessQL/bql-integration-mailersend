@@ -1,9 +1,0 @@
-version: 1.0
-provider:
-  name: openfaas
-  gateway: http://34.142.39.250:8080
-functions:
-  mailersend:
-    lang: node14
-    handler: ./function
-    image: businessql/integration-mailersend:0.0.1-test
