@@ -17,7 +17,7 @@ RUN chmod 777 /tmp
 
 USER app
 
-RUN mkdir -p /home/app/function
+# RUN mkdir -p /home/app/function
 
 # Wrapper/boot-strapper
 WORKDIR /home/app
@@ -49,7 +49,7 @@ RUN npm run build
 # WORKDIR /home/app/
 
 ENV cgi_headers="true"
-ENV fprocess="node index.js"
+ENV fprocess="node dist/app.js"
 ENV mode="http"
 ENV upstream_url="http://127.0.0.1:3000"
 

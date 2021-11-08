@@ -19,12 +19,10 @@ export type HandlerContext = {
   succeed: (value: any) => HandlerContext;
 };
 
-export const handler = async (event: HandlerEvent, context: HandlerContext) => {
+export const handler = async (event: any, context: any) => {
   const result = {
     name: 'mailersend',
-    version: '0.0.3-test',
-    event,
-    context,
+    version: '0.0.4-test',
   };
 
   return context.status(200).succeed(result);

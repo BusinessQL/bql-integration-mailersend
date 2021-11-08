@@ -4,10 +4,9 @@
 
 'use strict';
 
-const express = require('express');
+import express from 'express';
 const app = express();
-const handler = require('./function/handler');
-const bodyParser = require('body-parser');
+import handler from './handler';
 
 const defaultMaxSize = '100kb'; // body-parser default
 
@@ -16,7 +15,7 @@ app.disable('x-powered-by');
 const rawLimit = process.env.MAX_RAW_SIZE || defaultMaxSize;
 const jsonLimit = process.env.MAX_JSON_SIZE || defaultMaxSize;
 
-app.use(function addDefaultContentType(req, res, next) {
+app.use(function addDefaultContentType(req: any, res: any, next: any) {
   // When no content-type is given, the body element is set to
   // nil, and has been a source of contention for new users.
 
@@ -27,23 +26,29 @@ app.use(function addDefaultContentType(req, res, next) {
 });
 
 if (process.env.RAW_BODY === 'true') {
-  app.use(bodyParser.raw({ type: '*/*', limit: rawLimit }));
+  app.use(express.raw({ type: '*/*', limit: rawLimit }));
 } else {
-  app.use(bodyParser.text({ type: 'text/*' }));
-  app.use(bodyParser.json({ limit: jsonLimit }));
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(express.text({ type: 'text/*' }));
+  app.use(express.json({ limit: jsonLimit }));
+  app.use(express.urlencoded({ extended: true }));
 }
 
-const isArray = (a) => {
+const isArray = (a: any) => {
   return !!a && a.constructor === Array;
 };
 
-const isObject = (a) => {
+const isObject = (a: any) => {
   return !!a && a.constructor === Object;
 };
 
 class FunctionEvent {
-  constructor(req) {
+  body: any;
+  headers: any;
+  method: string;
+  query: any;
+  path: string;
+
+  constructor(req: any) {
     this.body = req.body;
     this.headers = req.headers;
     this.method = req.method;
@@ -53,14 +58,19 @@ class FunctionEvent {
 }
 
 class FunctionContext {
-  constructor(cb) {
+  statusCode: string | number;
+  cb: any;
+  headerValues: any;
+  cbCalled: number;
+
+  constructor(cb: any) {
     this.statusCode = 200;
     this.cb = cb;
     this.headerValues = {};
     this.cbCalled = 0;
   }
 
-  status(statusCode) {
+  status(statusCode?: string | number) {
     if (!statusCode) {
       return this.statusCode;
     }
@@ -69,7 +79,7 @@ class FunctionContext {
     return this;
   }
 
-  headers(value) {
+  headers(value?: any) {
     if (!value) {
       return this.headerValues;
     }
@@ -78,15 +88,15 @@ class FunctionContext {
     return this;
   }
 
-  succeed(value) {
+  succeed(value: any) {
     let err;
     this.cbCalled++;
     this.cb(err, value);
   }
 
-  fail(value) {
+  fail(value: any) {
     let message;
-    if (this.status() == '200') {
+    if (this.status() === '200') {
       this.status(500);
     }
 
@@ -95,8 +105,8 @@ class FunctionContext {
   }
 }
 
-const middleware = async (req, res) => {
-  const cb = (err, functionResult) => {
+const middleware = async (req: any, res: any) => {
+  const cb = (err: any, functionResult?: any) => {
     if (err) {
       console.error(err);
 
@@ -121,14 +131,15 @@ const middleware = async (req, res) => {
   const fnEvent = new FunctionEvent(req);
   const fnContext = new FunctionContext(cb);
 
-  Promise.resolve(handler(fnEvent, fnContext, cb))
+  Promise.resolve(handler(fnEvent, fnContext))
     .then((res) => {
       if (!fnContext.cbCalled) {
         fnContext.succeed(res);
       }
     })
     .catch((e) => {
-      cb(e);
+      console.log(e);
+      // cb(e);
     });
 };
 
@@ -139,8 +150,9 @@ app.put('/*', middleware);
 app.delete('/*', middleware);
 app.options('/*', middleware);
 
-const port = process.env.http_port || 3000;
+const port = process.env.http_port || 5555;
 
 app.listen(port, () => {
-  console.log(`node14 listening on port: ${port}`);
+  console.log(`bql-integration-mailersend:0.0.3-test`);
+  console.log(`http://localhost:${port}`);
 });
