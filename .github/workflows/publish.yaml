@@ -1,7 +1,7 @@
 name: Build & Push Docker Image
 
 on:
-  push:
+  pull_request:
     branches: [main]
 
 jobs:
@@ -33,4 +33,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: businessql/integration-mailersend:0.0.6-test
+          tags: businessql/integration-mailersend:0.0.7-test
