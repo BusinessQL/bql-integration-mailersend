@@ -4,6 +4,7 @@
 
 'use strict';
 require('dotenv').config();
+const packageJson = require('./package.json');
 const express = require('express');
 const app = express();
 const handler = require('./function/handler').default;
@@ -21,7 +22,7 @@ app.use(function addDefaultContentType(req, res, next) {
   // nil, and has been a source of contention for new users.
 
   if (!req.headers['content-type']) {
-    req.headers['content-type'] = 'text/plain';
+    req.headers['content-type'] = 'application/json';
   }
   next();
 });
@@ -98,23 +99,21 @@ class FunctionContext {
 const middleware = async (req, res) => {
   const cb = (err, functionResult) => {
     if (err) {
-      console.error(err);
-
       return res
         .status(fnContext.status())
-        .send(err.toString ? err.toString() : err);
+        .json({ error: err.toString ? err.toString() : err });
     }
 
     if (isArray(functionResult) || isObject(functionResult)) {
       res
         .set(fnContext.headers())
         .status(fnContext.status())
-        .send(JSON.stringify(functionResult));
+        .json(functionResult);
     } else {
       res
         .set(fnContext.headers())
         .status(fnContext.status())
-        .send(functionResult);
+        .send(JSON.stringify(functionResult));
     }
   };
 
@@ -132,15 +131,20 @@ const middleware = async (req, res) => {
     });
 };
 
+app.use('*', (req, res, next) => {
+  res.set('x-bql-integration-name', packageJson.name);
+  res.set('x-bql-integration-version', packageJson.version);
+  next();
+});
 app.post('/*', middleware);
-app.get('/*', middleware);
-app.patch('/*', middleware);
-app.put('/*', middleware);
-app.delete('/*', middleware);
 app.options('/*', middleware);
+app.use('*', (req, res) => {
+  res.status(404).json({ error: 'Not found', statusCode: 404 });
+});
 
 const port = process.env.http_port || process.env.PORT || 3000;
 
 app.listen(port, () => {
+  console.log(`${packageJson.name}:${packageJson.version}`);
   console.log(`http://localhost:${port}`);
 });

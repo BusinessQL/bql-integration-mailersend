@@ -1,3 +1,5 @@
+import { sendEmail } from './mailersend';
+
 export type HandlerEvent = {
   body: any;
   headers: {
@@ -17,15 +19,17 @@ export type HandlerContext = {
   status: (status: number) => HandlerContext;
   headers: (value: { [key: string]: string }) => HandlerContext;
   succeed: (value: any) => HandlerContext;
+  fail: (value: any) => HandlerContext;
 };
 
 export const handler = async (event: HandlerEvent, context: HandlerContext) => {
-  const result = {
-    name: 'mailersend',
-    version: '0.0.6-test',
-  };
+  try {
+    await sendEmail(event.body);
 
-  return context.status(200).succeed(result);
+    return context.status(200).succeed({ sent: true });
+  } catch (error: any) {
+    return context.status(500).fail(error.message || 'Failed to send email.');
+  }
 };
 
 export default handler;
