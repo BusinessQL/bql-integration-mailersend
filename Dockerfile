@@ -63,7 +63,7 @@ COPY --from=BUILD /app/package.json ./package.json
 # WORKDIR /home/app/
 
 ENV cgi_headers="true"
-ENV fprocess="node dist/app.js"
+ENV fprocess="node index.js"
 ENV mode="http"
 ENV upstream_url="http://127.0.0.1:3000"
 

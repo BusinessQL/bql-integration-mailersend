@@ -4,7 +4,7 @@
     "module": "commonjs",
     "declaration": true,
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "./function",
     "strict": true,
     "moduleResolution": "node",
     "baseUrl": ".",
