@@ -1,3 +1,14 @@
+FROM node:12-buster-slim as BUILD
+
+WORKDIR /app
+
+COPY . .
+
+RUN npm install
+RUN npm run build
+RUN rm -rf node_modules
+RUN npm install --production
+
 FROM --platform=${TARGETPLATFORM:-linux/amd64} ghcr.io/openfaas/of-watchdog:0.9.1 as watchdog
 FROM --platform=${TARGETPLATFORM:-linux/amd64} node:14-alpine as ship
 
@@ -15,18 +26,21 @@ ENV NPM_CONFIG_LOGLEVEL warn
 
 RUN chmod 777 /tmp
 
-USER app
+# USER app
 
 # RUN mkdir -p /home/app/function
 
 # Wrapper/boot-strapper
 WORKDIR /home/app
 # COPY package.json ./
-COPY . ./
+
+COPY --from=BUILD /app/dist ./dist
+COPY --from=BUILD /app/node_modules ./node_modules
+COPY --from=BUILD /app/package.json ./package.json
 
 # This ordering means the npm installation is cached for the outer function handler.
-RUN npm install
-RUN npm run build
+# RUN npm install
+# RUN npm run build
 
 # Copy outer function handler
 # COPY index.js ./
