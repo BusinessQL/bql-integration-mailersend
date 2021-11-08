@@ -1,5 +1,3 @@
-import { camelCase } from 'lodash';
-
 export type HandlerEvent = {
   body: any;
   headers: {
@@ -25,7 +23,6 @@ export const handler = async (event: HandlerEvent, context: HandlerContext) => {
   const result = {
     name: 'mailersend',
     version: '0.0.7-test',
-    test: camelCase('hello there'),
   };
 
   return context.status(200).succeed(result);
