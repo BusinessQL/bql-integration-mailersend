@@ -1,14 +1,21 @@
-import { sendEmail } from './mailersend';
+import { Integration } from './integrations';
+import { sendEmailHandler, SendEmailEvent } from './mailersend/send-email';
 
-export type HandlerEvent = {
-  body: any;
+export interface HandlerEvent {
+  body: EventBody;
   headers: {
     [key: string]: string;
   };
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   query: any;
   path: string;
-};
+}
+
+export interface EventBody {
+  method: string;
+  payload?: any;
+  integration?: Integration;
+}
 
 export type HandlerContext = {
   statusCode: number;
@@ -24,11 +31,23 @@ export type HandlerContext = {
 
 export const handler = async (event: HandlerEvent, context: HandlerContext) => {
   try {
-    await sendEmail(event.body);
+    const { method } = event.body;
 
-    return context.status(200).succeed({ sent: true });
+    if (!method) {
+      throw new Error('Missing method');
+    }
+
+    switch (method) {
+      case 'sendEmail':
+        return sendEmailHandler(event as SendEmailEvent, context);
+
+      default:
+        break;
+    }
+
+    throw new Error(`Invalid method: ${method}`);
   } catch (error: any) {
-    return context.status(500).fail(error.message || 'Failed to send email.');
+    return context.status(500).fail(error.message || 'Failed');
   }
 };
 
