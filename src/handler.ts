@@ -1,4 +1,4 @@
-import { Integration } from './integrations';
+import { App } from './apps';
 import { sendEmailHandler, SendEmailEvent } from './mailersend/send-email';
 
 export interface HandlerEvent {
@@ -14,7 +14,7 @@ export interface HandlerEvent {
 export interface EventBody {
   method: string;
   payload?: any;
-  integration?: Integration;
+  app?: App;
 }
 
 export type HandlerContext = {

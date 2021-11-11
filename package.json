@@ -1,5 +1,5 @@
 {
-  "name": "businessql-integration-mailersend",
+  "name": "businessql-app-mailersend",
   "version": "0.0.2-alpha",
   "description": "",
   "main": "index.js",
