@@ -1,3 +1,4 @@
+const MailRecipient = require('mailersend').Recipient;
 const EmailParams = require('mailersend').EmailParams;
 const MailerSend = require('mailersend');
 
@@ -43,6 +44,10 @@ export const sendEmail = async ({
 
   const allVariables: any[] = [];
 
+  const formattedRecipients = recipients.map((recipient) => {
+    return new MailRecipient(recipient.email, recipient.name);
+  });
+
   recipients.forEach((recipient) => {
     const combinedVariables = {
       ...variables,
@@ -61,7 +66,7 @@ export const sendEmail = async ({
   let emailParams = new EmailParams()
     .setFrom(from.email)
     .setFromName(from.name)
-    .setRecipients(recipients)
+    .setRecipients(formattedRecipients)
     .setSubject(subject)
     .setTemplateId(template.id);
 

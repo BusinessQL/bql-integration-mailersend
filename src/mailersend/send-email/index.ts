@@ -1,28 +1,19 @@
-import { EventBody, HandlerEvent, HandlerContext } from '../../handler';
-import { From, Recipient, sendEmail, Template, Variables } from '..';
+import { Request, Response } from 'express';
+import { From, Recipient, sendEmail, Template, Variables } from '../utils';
 
-export interface SendEmailEvent extends HandlerEvent {
-  body: SendEmailEventBody;
-}
+export type SendEmailPayload = {
+  apiKey: string;
+  from: From;
+  recipients: Recipient[];
+  template: Template;
+  subject: string;
+  variables?: Variables;
+};
 
-export interface SendEmailEventBody extends EventBody {
-  payload: {
-    apiKey: string;
-    from: From;
-    recipients: Recipient[];
-    template: Template;
-    subject: string;
-    variables?: Variables;
-  };
-}
-
-export const sendEmailHandler = async (
-  event: SendEmailEvent,
-  context: HandlerContext
-) => {
+export const sendEmailHandler = async (req: Request, res: Response) => {
   try {
-    const { apiKey, from, recipients, template, subject, variables } =
-      event.body.payload;
+    const { apiKey, from, recipients, template, subject, variables } = req.body
+      .payload as SendEmailPayload;
 
     if (!apiKey) {
       throw new Error('Missing apiKey');
@@ -46,8 +37,8 @@ export const sendEmailHandler = async (
 
     await sendEmail({ apiKey, from, recipients, template, subject, variables });
 
-    return context.status(200).succeed({ sent: true });
+    return res.json({ sent: true });
   } catch (error: any) {
-    return context.status(500).fail(error.message || 'Failed to send email.');
+    return res.status(500).send(error.message || 'Failed to send email.');
   }
 };

@@ -4,7 +4,8 @@
     "module": "commonjs",
     "declaration": true,
     "sourceMap": true,
-    "outDir": "./function",
+    "rootDir": "src",
+    "outDir": "dist",
     "strict": true,
     "moduleResolution": "node",
     "baseUrl": ".",
@@ -21,6 +22,6 @@
     }
   },
   "compileOnSave": false,
-  "exclude": ["node_modules", "function"],
+  "exclude": ["node_modules", "dist"],
   "include": ["src/**/*", "**/*.ts", "**/*.tsx", "**/*.test.ts", "**/*.d.ts"]
 }
