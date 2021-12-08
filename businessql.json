@@ -3,6 +3,9 @@
   "nameId": "mailersend",
   "name": "MailerSend",
   "categories": ["email"],
+  "api": {
+    "url": "https://us-east4-bql-production.cloudfunctions.net/mailersend"
+  },
   "settings": {
     "fields": [
       {
