@@ -1,0 +1,15 @@
+{
+  "version": "0.0.1-alpha",
+  "nameId": "mailersend",
+  "name": "MailerSend",
+  "categories": ["email"],
+  "settings": {
+    "fields": [
+      {
+        "label": "API Key",
+        "name": "apiKey",
+        "type": "password"
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+input SendEmailInputFrom {
+  name: String!
+  email: String!
+}
+
+input SendEmailInputRecipient {
+  name: String!
+  email: String!
+  variables: JSON
+}
+
+input SendEmailInputTemplate {
+  id: String!
+}
+
+type SendEmailResponse {
+  sent: Boolean!
+}
+
+type Query {
+  sendEmail(
+    subject: String!
+    from: SendEmailInputFrom!
+    recipients: [SendEmailInputRecipient!]!
+    template: SendEmailInputTemplate!
+    variables: JSON
+  ): SendEmailResponse
+}
