@@ -17,5 +17,11 @@
   },
   "developer": {
     "nameId": "businessql"
+  },
+  "logo": "https://raw.githubusercontent.com/BusinessQL/businessql-app-mailersend/main/images/mailersend.svg",
+  "theme": {
+    "colors": {
+      "primary": "#4E48E0"
+    }
   }
 }
