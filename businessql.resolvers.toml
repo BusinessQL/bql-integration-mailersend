@@ -1,0 +1,20 @@
+[query]
+  # send email
+  [query.sendEmail]
+  type = "api"
+  url = "https://api.mailersend.com/v1/email"
+  method = "POST"
+
+    [query.sendEmail.headers]
+      Authorization = "Bearer {data.apiKey}"
+
+    [query.sendEmail.data]
+      from = "{{args.from}}"
+      to = "{{args.to}}"
+      subject = "{{args.subject}}"
+      template_id = "{{args.template}}"
+      variables = "{{args.variables}}"
+
+    [query.sendEmail.response]
+      [query.sendEmail.response.success]
+      sent = true

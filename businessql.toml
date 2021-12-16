@@ -1,0 +1,17 @@
+name = "MailerSend"
+nameId = "mailersend"
+categories = ["email"]
+version = "0.0.1-alpha"
+logo = "https://raw.githubusercontent.com/BusinessQL/businessql-app-mailersend/main/images/logo.svg"
+
+[settings]
+  [[settings.fields]]
+  label = "API Key"
+  name = "apiKey"
+  type = "password"
+
+[developer]
+nameId = "businessql"
+
+[theme.colors]
+primary = "#4E48E0"

@@ -1,28 +1,33 @@
+type Query {
+  sendEmail(
+    from: SendEmailInputFrom!
+    to: [SendEmailInputRecipient!]!
+    subject: String!
+    template: String
+    variables: [SendEmailVariable]
+  ): SendEmailResponse
+}
+
 input SendEmailInputFrom {
-  name: String!
   email: String!
+  name: String
 }
 
 input SendEmailInputRecipient {
-  name: String!
   email: String!
-  variables: JSON
+  name: String
 }
 
-input SendEmailInputTemplate {
-  id: String!
+input SendEmailVariable {
+  email: String!
+  substitutions: [SendEmailVariableSubstitution!]!
+}
+
+input SendEmailVariableSubstitution {
+  var: String!
+  value: String!
 }
 
 type SendEmailResponse {
   sent: Boolean!
-}
-
-type Query {
-  sendEmail(
-    subject: String!
-    from: SendEmailInputFrom!
-    recipients: [SendEmailInputRecipient!]!
-    template: SendEmailInputTemplate!
-    variables: JSON
-  ): SendEmailResponse
 }
