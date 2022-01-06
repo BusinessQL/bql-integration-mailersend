@@ -1,7 +1,7 @@
 name = "MailerSend"
 nameId = "mailersend"
 categories = ["email"]
-version = "0.0.1-alpha"
+version = "0.0.2-alpha"
 logo = "https://raw.githubusercontent.com/BusinessQL/businessql-app-mailersend/main/images/logo.svg"
 
 [settings]

@@ -1,7 +1,7 @@
 type Query {
   sendEmail(
     from: SendEmailInputFrom!
-    to: [SendEmailInputRecipient!]!
+    to: [SendEmailInputRecipient]
     subject: String!
     template: String
     variables: [SendEmailVariable]
@@ -20,7 +20,7 @@ input SendEmailInputRecipient {
 
 input SendEmailVariable {
   email: String!
-  substitutions: [SendEmailVariableSubstitution!]!
+  substitutions: [SendEmailVariableSubstitution]
 }
 
 input SendEmailVariableSubstitution {
