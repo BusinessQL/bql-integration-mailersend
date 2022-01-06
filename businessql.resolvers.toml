@@ -9,7 +9,7 @@
       Authorization = "Bearer {data.apiKey}"
 
     [query.sendEmail.data]
-      from = "{{args.from}}"
+      from = "{{args.from|data.from}}"
       to = "{{args.to}}"
       subject = "{{args.subject}}"
       template_id = "{{args.template}}"

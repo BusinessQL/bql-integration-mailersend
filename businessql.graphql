@@ -1,6 +1,6 @@
 type Query {
   sendEmail(
-    from: SendEmailInputFrom!
+    from: SendEmailInputFrom
     to: [SendEmailInputRecipient]
     subject: String!
     template: String
